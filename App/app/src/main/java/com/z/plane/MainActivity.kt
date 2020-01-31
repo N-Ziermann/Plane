@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         val nextButton = findViewById<Button>(R.id.nextDeviceButton)
         val prevButton = findViewById<Button>(R.id.lastDeviceButton)
         val connectButton = findViewById<Button>(R.id.connectButton)
+        var connectButtonInsec = findViewById<Button>(R.id.connectButtonInsec)
 
 
         //// get bluetooth adapter
@@ -79,17 +80,35 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        connectButtonInsec.setOnClickListener{
+            // connect to bluetooth device
+            var socket: BluetoothSocket = activeDevice!!.createInsecureRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+
+            //adapter!!.cancelDiscovery() // saves performance
+            Log.println(Log.ERROR,"i","i")
+            try{
+                socket.connect()
+
+                //val speedBar = findViewById<SeekBar>(R.id.speedBar)
+                //socket.outputStream.write(speedBar.progress)
+            }
+            catch (e: Exception){
+                debugMsg!!.text = "" + e
+                Log.println(Log.ERROR,""+e,""+e)
+            }
+        }
+
         connectButton.setOnClickListener{
             // connect to bluetooth device
-            var socket: BluetoothSocket = activeDevice!!.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+            var socket: BluetoothSocket = activeDevice!!.createRfcommSocketToServiceRecord(UUID.fromString("00000000-0000-1000-8000-00805F9B34FB"))
 
             //adapter!!.cancelDiscovery() // saves performance
 
             try{
                 socket.connect()
 
-                val speedBar = findViewById<SeekBar>(R.id.speedBar)
-                socket.outputStream.write(speedBar.progress)
+                //val speedBar = findViewById<SeekBar>(R.id.speedBar)
+                //socket.outputStream.write(speedBar.progress)
             }
             catch (e: Exception){
                 debugMsg!!.text = "" + e

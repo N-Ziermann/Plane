@@ -71,9 +71,19 @@
         android:id="@+id/connectButton"
         android:layout_width="135dp"
         android:layout_height="49dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="176dp"
         android:layout_marginTop="148dp"
         android:text="Connect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/connectButtonInsec"
+        android:layout_width="135dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="148dp"
+        android:text="Connect Insec"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
