@@ -1,5 +1,7 @@
 package com.z.plane
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
@@ -11,6 +13,8 @@ import android.widget.Button
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat
 import org.w3c.dom.Text
 import java.lang.Exception
 import java.util.*
@@ -23,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     var pairedDevices: ArrayList<BluetoothDevice> = ArrayList()
     var activeDeviceId = 0
     var activeDevice: BluetoothDevice? = null
+    var permissionsNeeded: Array<String> = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN)
+    var permissionCode: Int = 1 // can be any number
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +42,12 @@ class MainActivity : AppCompatActivity() {
         val connectButton = findViewById<Button>(R.id.connectButton)
         var connectButtonInsec = findViewById<Button>(R.id.connectButtonInsec)
 
+
+        // get permissions:
+        for (perm in permissionsNeeded){
+            if(ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED)  //if permission missing
+                ActivityCompat.requestPermissions(this, arrayOf<String>(perm), permissionCode)
+        }
 
         //// get bluetooth adapter
         adapter = BluetoothAdapter.getDefaultAdapter()
@@ -54,6 +66,9 @@ class MainActivity : AppCompatActivity() {
             val enableBluetoothIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBluetoothIntent, 1)
         }
+
+        // first check for devices:
+        loadPairedDevices()
 
         // assign buttons to tasks
         reloadButton.setOnClickListener{    // check if new bluetooth connections were established
@@ -100,13 +115,15 @@ class MainActivity : AppCompatActivity() {
 
         connectButton.setOnClickListener{
             // connect to bluetooth device
-            var socket: BluetoothSocket = activeDevice!!.createRfcommSocketToServiceRecord(UUID.fromString("00000000-0000-1000-8000-00805F9B34FB"))
+            var socket: BluetoothSocket = activeDevice!!.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
 
             //adapter!!.cancelDiscovery() // saves performance
 
             try{
-                socket.connect()
-
+                if(!socket!!.isConnected)
+                    socket.connect()
+                else
+                    Log.println(Log.ERROR,"already con","already con")
                 //val speedBar = findViewById<SeekBar>(R.id.speedBar)
                 //socket.outputStream.write(speedBar.progress)
             }
@@ -115,10 +132,6 @@ class MainActivity : AppCompatActivity() {
                 Log.println(Log.ERROR,""+e,""+e)
             }
         }
-
-        // first check for devices:
-        loadPairedDevices()
-
 
     }
 
