@@ -18,6 +18,18 @@
         app:layout_constraintStart_toStartOf="@+id/lastDeviceButton"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/dataText"
+        android:layout_width="155dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="216dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintStart_toStartOf="@+id/lastDeviceButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/reloadButton"
         android:layout_width="wrap_content"
@@ -86,6 +98,29 @@
         android:text="Connect Insec"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/fly"
+        android:layout_width="135dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="208dp"
+        android:text="Turn On/Off"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/recalibrate"
+        android:layout_width="359dp"
+        android:layout_height="225dp"
+        android:layout_marginBottom="16dp"
+        android:text="Recalibrate Sensor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
