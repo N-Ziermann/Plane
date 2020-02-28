@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.view.View
+import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
     var recalibrate:Button? = null
     var reloadButton:Button? = null
     var fly:Button? = null
+    var intervalField:EditText? = null
 
 
     // bluetooth
@@ -55,8 +57,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
     var activeDevice: BluetoothDevice? = null
     var permissionsNeeded: Array<String> = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN)
     var permissionCode: Int = 1     // can be any number
-    var sendInterval: Long = 100    // miliseconds between each transmission
-    var blSocket: BluetoothSocket? = null
+    var sendInterval: Long = 500    // miliseconds between each transmission
+    var btSocket: BluetoothSocket? = null
 
     // gyroscope
     var sensorManager: SensorManager? = null
@@ -123,15 +125,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
 
 
 
-            val dataString = "" + sendableGyroData[1] + "," + sendableGyroData[0] + "," + speedBarData  //Horizontal(0...180), Vertical(0...180), motorspeed(0...100)
+            val dataString = "" + sendableGyroData[1] + "," + sendableGyroData[0] + "," + speedBarData + ";"  //Horizontal(0...180), Vertical(0...180), motorspeed(0...100)
             dataText!!.text = dataString
-            Log.println(Log.DEBUG, dataString, dataString)
+            //Log.println(Log.DEBUG, dataString, dataString)
 
 
             // try to send data
-            if(blSocket != null && blSocket!!.isConnected){    // working connection is set up
+            if(btSocket != null && btSocket!!.isConnected){    // working connection is set up
                 try {
-                    blSocket!!.outputStream.write(dataString.toByteArray())
+                    btSocket!!.outputStream.write(dataString.toByteArray())
                 }catch (e:Exception){
                     e.printStackTrace()
                 }
@@ -180,6 +182,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
         recalibrate  = findViewById<Button>(R.id.recalibrate)
         fly = findViewById<Button>(R.id.fly)
         speedBar = findViewById<SeekBar>(R.id.speedBar)
+        intervalField = findViewById<EditText>(R.id.interval)
+
+        // load defaults
+        intervalField!!.setText(sendInterval.toString())
 
         ///// BLUETOOTH
 
@@ -238,6 +244,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
         // assign buttons to tasks
 
         fly!!.setOnClickListener {
+            sendInterval = intervalField!!.text.toString().toLong()
+            Log.println(Log.ERROR, intervalField!!.text.toString(), intervalField!!.text.toString())
             isFlying = !isFlying
         }
 
@@ -288,14 +296,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
 
         connectButton!!.setOnClickListener{
             // connect to bluetooth device
-            if(blSocket == null) {
-                blSocket =
-                    activeDevice!!.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+            if(btSocket == null) {
+                btSocket = activeDevice!!.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
             }
-            if(blSocket!!.isConnected == false){ // no connection yet
+            if(btSocket!!.isConnected == false){ // no connection yet
                 try {
-                    if (!blSocket!!.isConnected)
-                        blSocket!!.connect()
+                    if (!btSocket!!.isConnected)
+                        btSocket!!.connect()
                     else
                         Log.println(Log.ERROR, "already con", "already con")
                     //socket.outputStream.write()
