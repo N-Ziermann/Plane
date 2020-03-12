@@ -10,7 +10,7 @@ int inputvalues[] = {90,90,0};
 String inputStrings[] = {"","",""};
 int inputIndex = 0;                         // index of where inside the inputStrings array to store new data
 
-int noSignalMotorSpeed = 40;                // speed of the motor if signal is lost
+int noSignalMotorSpeed = 20;                // speed of the motor if signal is lost
 unsigned long lastSignalTime = 0;           // time when last bluetooth signal was received
 unsigned long signalLostTime = 2000UL;      // time in miliseconds to wait until sure the signal is lost (2 senconds)
 
@@ -83,7 +83,7 @@ void loop()
       // configure servos
       horizontal.write(inputvalues[0]);
       vertical.write(inputvalues[1]);
-      motor.write((int)map(inputvalues[2],0,100,18,175));
+      motor.write((int)map(inputvalues[2],0,100,17,175));
       // for servos to function properly:
       delay(25);
     }
