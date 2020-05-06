@@ -22,3 +22,13 @@ Ein Schulprojekt zum Fliegen eines Flugzeuges mit einem Android Handy
 ## Bauplan
 
 ![](https://github.com/N-Ziermann/Plane/blob/master/Schaltplan.png)
+
+## Contributors
+
+Niklas Ziermann
+
+
+
+## Copyright & License
+
+**© Niklas Ziermann** 
