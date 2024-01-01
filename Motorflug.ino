@@ -12,7 +12,7 @@ int inputIndex = 0;                         // index of where inside the inputSt
 
 int noSignalMotorSpeed = 20;                // speed of the motor if signal is lost
 unsigned long lastSignalTime = 0;           // time when last bluetooth signal was received
-unsigned long signalLostTime = 2000UL;      // time in miliseconds to wait until sure the signal is lost (2 senconds)
+unsigned long signalLostTime = 2000UL;      // time in milliseconds to wait until sure the signal is lost (2 seconds)
 
 bool DEBUG = true;
 
